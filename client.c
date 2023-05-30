@@ -20,7 +20,7 @@ int main() {
     int shm_id;
     SharedData* shared_data;
 
-    if ((key = ftok("server8.c", 'B')) == -1) {
+    if ((key = ftok("server.c", 'B')) == -1) {
         perror("ftok");
         exit(1);
     }

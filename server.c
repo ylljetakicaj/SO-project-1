@@ -43,3 +43,47 @@ void* clientThread(void* arg) {
 
     pthread_exit(NULL);
 }
+int main() {
+    key_t key;
+    int shm_id;
+    pthread_t client_threads[MAX_CLIENTS];
+    int client_indices[MAX_CLIENTS];
+
+    if ((key = ftok("server.c", 'B')) == -1) {
+        perror("ftok");
+        exit(1);
+    }
+
+    if ((shm_id = shmget(key, sizeof(SharedData) * MAX_CLIENTS, 0644 | IPC_CREAT)) == -1) {
+        perror("shmget");
+        exit(1);
+    }
+
+    if ((shared_data = (SharedData*)shmat(shm_id, NULL, 0)) == (void*)-1) {
+        perror("shmat");
+        exit(1);
+    }
+
+    printf("Server started. Listening for connections...\n");
+
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        shared_data[i].client_connected = 0;
+    }
+
+    sem_init(&available_clients, 0, MAX_CLIENTS);
+
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        client_indices[i] = i;
+        pthread_create(&client_threads[i], NULL, clientThread, &client_indices[i]);
+    }
+
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        pthread_join(client_threads[i], NULL);
+    }
+
+    sem_destroy(&available_clients);
+    shmdt(shared_data);
+    shmctl(shm_id, IPC_RMID, NULL);
+
+    return 0;
+}

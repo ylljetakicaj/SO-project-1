@@ -23,14 +23,18 @@ Kompajloni kodin e klientit me ane te kesaj komande
 ```
 gcc client.c -o client
 ```
-#Run Instructions
+# Run Instructions
+
 ## Server
-Run the server
+1.Run the server
 ```
 ./server
 ```
 ## Client
-Run the client
+2.Run the client
 ```
 ./client
 ```
+3. Ndiqni udhëzimet për të futur llojin e kërkesës (1-3) dhe mesazhin. Shkruani "exit" për të lënë klientin.
+
+

@@ -36,6 +36,7 @@ int main() {
     }
 
     printf("Connected to the server.\n");
+
     char request[MSG_SIZE];
     int request_type;
 

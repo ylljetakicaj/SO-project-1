@@ -36,3 +36,40 @@ int main() {
     }
 
     printf("Connected to the server.\n");
+    char request[MSG_SIZE];
+    int request_type;
+
+    while (1) {
+        printf("Enter a clients number (1-5) and message (or 'exit' to quit):\n");
+        fgets(request, MSG_SIZE, stdin);
+        request[strcspn(request, "\n")] = '\0';
+
+        if (strcmp(request, "exit") == 0) {
+            break;
+        }
+
+        char* token = strtok(request, " ");
+        request_type = atoi(token);
+        char* message = strtok(NULL, "");
+
+        if (request_type >= 1 && request_type <= 5 && message != NULL) {
+            strncpy(shared_data[request_type - 1].msg_text, message, MSG_SIZE);
+            shared_data[request_type - 1].client_connected = 1;
+
+            while (shared_data[request_type - 1].client_connected) {
+                // Wait for the server's response
+                usleep(100000); // Sleep for 100 milliseconds
+            }
+
+            printf("Received response from server: %s\n", shared_data[request_type - 1].msg_text);
+        } else {
+            printf("Invalid request format.\n");
+        }
+    }
+
+    shmdt(shared_data);
+
+    printf("Disconnected from the server.\n");
+
+    return 0;
+}

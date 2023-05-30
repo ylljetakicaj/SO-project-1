@@ -37,4 +37,11 @@ gcc client.c -o client
 ```
 3. Ndiqni udhëzimet për të futur llojin e kërkesës (1-3) dhe mesazhin. Shkruani "exit" për të lënë klientin.
 
+## Aditional Notes
 
+- Programet e serverit dhe klientit përdorin mekanizmat IPC të bazuara në memorien e përbashkët. Serveri krijon një segment memorie të përbashkët duke përdorur funksionin **'shmget'** dhe klienti i bashkëngjitet memorjes së përbashkët duke përdorur funksionin **'shmat'**.
+- Programi i serverit kufizon numrin maksimal të klientëve që mund të lidhen njëkohësisht. Ky kufi përcaktohet nga konstanta **'MAX_CLIENTS'** si në kodin e serverit ashtu edhe në kodin e klientit.
+- Mekanizmat e duhur të sinkronizimit duke përdorur mutexes **('pthread_mutex_t')** dhe semaforë **('sem_t')** zbatohen në programin e serverit për të siguruar sigurinë e fijeve dhe për të mbrojtur burimet e përbashkëta.
+-Programi i serverit krijon fije të shumta klientësh duke përdorur funksionin pthread_create për të trajtuar kërkesat njëkohësisht.
+-Programi i klientit ndërvepron me serverin duke dërguar kërkesa dhe duke marrë përgjigje përmes memories së përbashkët.
+-Kodi është i mirë-dokumentuar dhe i lehtë për t'u kuptuar, duke ofruar njohuri mbi detajet e zbatimit, mekanizmat IPC, temat, sinkronizimin dhe trajtimin e gabimeve.

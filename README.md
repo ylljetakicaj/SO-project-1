@@ -26,12 +26,12 @@ gcc client.c -o client
 # Run Instructions
 
 ## Server
-1.Run the server
+1. Run the server
 ```
 ./server
 ```
 ## Client
-2.Run the client
+2. Run the client
 ```
 ./client
 ```
